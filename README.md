@@ -4,5 +4,6 @@ dependancies :
 - openai
 - discord.py
 - python-dotenv
-
+- configparser
+- pyYAML
 you need a .env file in the root of the project with toses variables, use the .env.example, adapt it and rename it as .env

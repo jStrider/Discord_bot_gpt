@@ -2,10 +2,10 @@ import os
 import discord
 from discord import app_commands
 from discord.ext import commands
+from discord import Intents
 import openai
 from dotenv import load_dotenv
-from discord import Intents
-
+import yaml
 # Chargement des variables d'environnement
 load_dotenv()
 #Discord
@@ -14,8 +14,18 @@ specific_channel_id = int(os.getenv("CHANNEL"))
 #OpenAI
 openai.organization = os.getenv("OPENAI_ORGID")
 openai.api_key = os.getenv("OPENAI_TOKEN")
-init_prompt_pickup = os.getenv("INIT_PROMPT_PICKUP")
-init_prompt_chat_seduction = os.getenv("INIT_PROMPT_CHAT_SEDUCTION")
+
+# Chargement de la configuration
+# Read the YAML file
+with open("config.yml", "r") as file:
+    config = yaml.safe_load(file)
+
+# Access the values in the YAML file
+init_prompt_pickup = config["prompt"]["init_prompt_pickup"]
+init_prompt_chat_seduction = config["prompt"]["init_prompt_chat_seduction"]
+
+print(init_prompt_pickup)
+print(init_prompt_chat_seduction)
 if TOKEN == None:
     print("discord undefined token")
 if openai.api_key == None:
