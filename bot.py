@@ -24,8 +24,6 @@ with open("config.yml", "r") as file:
 init_prompt_pickup = config["prompt"]["init_prompt_pickup"]
 init_prompt_chat_seduction = config["prompt"]["init_prompt_chat_seduction"]
 
-print(init_prompt_pickup)
-print(init_prompt_chat_seduction)
 if TOKEN == None:
     print("discord undefined token")
 if openai.api_key == None:
