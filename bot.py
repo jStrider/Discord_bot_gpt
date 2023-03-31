@@ -61,7 +61,11 @@ async def pickup(interaction: discord.Interaction, pickup_context: str):
                 {"role" : "user", "content" : pickup_context}
             ]     
             )
-            await interaction.response.send_message(gpt_result.choices[0].message.content.strip())
+            try:
+                print(gpt_result.choices[0].message.content)
+                await interaction.response.send_message(str(gpt_result.choices[0].message.content))
+            except Exception as e:
+                print(e)
 
 @bot.tree.command(name="chat")
 @app_commands.describe(chat_context = "envoi ici le dernier message de ton crush on l'historique de conversation, j'y répondrais pour toi")
@@ -76,6 +80,22 @@ async def pickup(interaction: discord.Interaction, chat_context: str):
             ]     
             )
             await interaction.response.send_message(gpt_result.choices[0].message.content.strip())
+
+@bot.tree.command(name="info")
+#@app_commands.describe("tu verras les prompts que j'utilise pour generer mes réponses")
+async def pickup(interaction: discord.Interaction):
+        if  interaction.channel_id == specific_channel_id:
+            await interaction.response.send_message(f"""Voici les prompts utilisés :  
+
+        **pour la phrase d'accroche :** 
+            
+            {init_prompt_pickup}
+
+        **pour la réponse au chat :**
+                
+            {init_prompt_chat_seduction}
+            
+            """)
 
 
 # Démarrer le bot
