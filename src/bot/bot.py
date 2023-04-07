@@ -1,5 +1,6 @@
 import os
 import discord
+import asyncio
 from discord import app_commands
 from discord.ext import commands
 from discord import Intents
@@ -69,21 +70,14 @@ async def pickup(interaction: discord.Interaction, pickup_context: str):
 
 @bot.tree.command(name="chat")
 @app_commands.describe(chat_context = "envoi ici le dernier message de ton crush on l'historique de conversation, j'y répondrais pour toi")
-async def pickup(interaction: discord.Interaction, chat_context: str):
+async def chat(interaction: discord.Interaction, chat_context: str):
         if  interaction.channel_id == specific_channel_id:
-            gpt_result = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
-            max_tokens=150,
-            messages=[
-                {"role" : "system", "content" : init_prompt_chat_seduction},
-                {"role" : "user", "content" : chat_context}
-            ]     
-            )
-            await interaction.response.send_message(gpt_result.choices[0].message.content.strip())
+            await interaction.response.send_message("loading an answer...")
+            task = asyncio.create_task(sendAsyncMessage(interaction,chat_context))
 
 @bot.tree.command(name="info")
 #@app_commands.describe("tu verras les prompts que j'utilise pour generer mes réponses")
-async def pickup(interaction: discord.Interaction):
+async def info(interaction: discord.Interaction):
         if  interaction.channel_id == specific_channel_id:
             await interaction.response.send_message(f"""Voici les prompts utilisés :  
 
@@ -97,6 +91,15 @@ async def pickup(interaction: discord.Interaction):
             
             """)
 
-
+async def sendAsyncMessage(interaction: discord.Interaction, prompt: str ):
+    gpt_result = openai.ChatCompletion.create(
+    model="gpt-3.5-turbo",
+    max_tokens=150,
+    messages=[
+        {"role" : "system", "content" : init_prompt_chat_seduction},
+        {"role" : "user", "content" : prompt}
+    ]     
+    )
+    await interaction.response.send_message(gpt_result.choices[0].message.content.strip())
 # Démarrer le bot
 bot.run(TOKEN)

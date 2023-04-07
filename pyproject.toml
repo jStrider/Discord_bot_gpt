@@ -1,0 +1,22 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "jrw_discord_bot"
+version = "0.0.1"
+authors = [
+  { name="jrw", email="" },
+]
+description = "a bot for discord using openai gpt"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/jStrider/Discord_bot_gpt"
+"Bug Tracker" = ""
