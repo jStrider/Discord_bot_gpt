@@ -4,12 +4,13 @@ build-backend = "setuptools.build_meta"
 
 [tool.setuptools-git-versioning]
 enabled = true
+version_file = "VERSION"
 
 [project]
 name = "jrw_discord_bot"
 dynamic = ["version"]
 authors = [
-  { name="jrw", email="" },
+  { name="jrw", email="ju.renaud974@gmail.com" },
 ]
 description = "a bot for discord using openai gpt"
 readme = "README.md"
