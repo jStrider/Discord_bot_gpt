@@ -5,6 +5,8 @@ build-backend = "setuptools.build_meta"
 [tool.setuptools-git-versioning]
 enabled = true
 version_file = "VERSION"
+template = "{tag}"
+
 
 [project]
 name = "jrw_discord_bot"
