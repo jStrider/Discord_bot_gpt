@@ -22,27 +22,24 @@ class jrw_bot:
         # Chargement des variables d'environnement
         # Discord
         config_env_not_set=False
-        try:
-            self.discordtoken = os.environ["JRW_DISCORD_TOKEN"]
-            self.specific_channel_id = int(os.environ["JRW_CHANNEL"])
-            # OpenAI
-            openai.api_key = os.environ["JRW_OPENAI_TOKEN"]
-            openai.organization = os.environ["JRW_OPENAI_ORGID"]
-        except Exception as e:
-            print(e)
+        self.discordtoken = os.environ.get("JRW_DISCORD_TOKEN")
+        self.specific_channel_id = int(os.environ.get("JRW_CHANNEL"))
+        # OpenAI
+        openai.api_key = os.environ.get("JRW_OPENAI_TOKEN")
+        openai.organization = os.environ.get("JRW_OPENAI_ORGID")
+        config_env_not_set=True
+        if self.discordtoken == None:
+            print("JRW_DISCORD_TOKEN not set")
             config_env_not_set=True
-            if self.discordtoken == None:
-                print("JRW_DISCORD_TOKEN not set")
-                config_env_not_set=True
-            if self.specific_channel_id == None:
-                print("JRW_CHANNEL not set")
-                config_env_not_set=True
-            if openai.api_key == None:
-                print("JRW_OPENAI_TOKEN not set")
-                config_env_not_set=True
-            if openai.organization == None:
-                print("JRW_OPENAI_ORGID not set")
-                config_env_not_set=True
+        if self.specific_channel_id == None:
+            print("JRW_CHANNEL not set")
+            config_env_not_set=True
+        if openai.api_key == None:
+            print("JRW_OPENAI_TOKEN not set")
+            config_env_not_set=True
+        if openai.organization == None:
+            print("JRW_OPENAI_ORGID not set")
+            config_env_not_set=True
 
         if config_env_not_set:
             print("Please set the environment variables")
