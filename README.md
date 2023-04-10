@@ -54,10 +54,10 @@ I'm joking, there is a step 2 :
 There is a few envrionnement variables that is used for the bot, i could do a good menu for you to put thoses confidentials informations in it but... you know... BEHHHH
 
 ```
-DISCORD_TOKEN=
-CHANNEL=
-OPENAI_TOKEN=
-OPENAI_ORGID=
+JRW_DISCORD_TOKEN=
+JRW_CHANNEL=
+JRW_OPENAI_TOKEN=
+JRW_OPENAI_ORGID=
 ```
 
 I recommand you to make a .jrwbot in your home directory and to source it from your .bashrc, .profile or anything else.
