@@ -21,11 +21,29 @@ class jrw_bot:
         load_dotenv()
         # Chargement des variables d'environnement
         # Discord
+        config_env_not_set=False
         self.discordtoken = os.getenv("DISCORD_TOKEN")
-        specific_channel_id = int(os.getenv("CHANNEL"))
+        self.specific_channel_id = int(os.getenv("CHANNEL"))
         # OpenAI
         openai.api_key = os.getenv("OPENAI_TOKEN")
         openai.organization = os.getenv("OPENAI_ORGID")
+
+        if self.discordtoken == None:
+            print("DISCORD_TOKEN not set")
+            config_env_not_set=True
+        if self.specific_channel_id == None:
+            print("CHANNEL not set")
+            config_env_not_set=True
+        if openai.api_key == None:
+            print("OPENAI_TOKEN not set")
+            config_env_not_set=True
+        if openai.organization == None:
+            print("OPENAI_ORGID not set")
+            config_env_not_set=True
+
+        if config_env_not_set:
+            print("Please set the environment variables")
+            exit(1)
         # Get the absolute path to the current directory
         current_dir = os.path.abspath(os.path.dirname(__file__))
 
