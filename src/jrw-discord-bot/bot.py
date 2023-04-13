@@ -27,7 +27,7 @@ class jrw_bot:
         # OpenAI
         openai.api_key = os.environ.get("JRW_OPENAI_TOKEN")
         openai.organization = os.environ.get("JRW_OPENAI_ORGID")
-        config_env_not_set=True
+        config_env_not_set=False
         if self.discordtoken == None:
             print("JRW_DISCORD_TOKEN not set")
             config_env_not_set=True
