@@ -1,4 +1,4 @@
-from bot import jrw_bot
+from .bot import jrw_bot
 import logging
 
 logging.warning("make sure the environment variables are set.  See README.md for more info.")
