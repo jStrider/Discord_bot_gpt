@@ -7,6 +7,17 @@ from discord import Intents
 import openai
 from dotenv import load_dotenv
 import yaml
+async def get_gpt_answer_to_prompt(interaction: discord.Interaction, prompt: str, context: str):
+    gpt_result = openai.ChatCompletion.create(
+    model="gpt-3.5-turbo",
+    max_tokens=150,
+    messages=[
+        {"role" : "system", "content" : prompt},
+        {"role" : "user", "content" : context}
+    ]
+    )
+    response=gpt_result.choices[0].message.content.strip()
+    await interaction.edit_original_response(response)
 class jrw_bot:
     def __init__(self):
         self.discordtoken = ""
@@ -61,7 +72,7 @@ class jrw_bot:
 
 
 
-        await interaction.edit_original_response(response)
+        
     def init_bot(self):
         # Créer un objet Intents avec les intents par défaut
         intents = Intents.default()
@@ -106,13 +117,3 @@ class jrw_bot:
         bot.run(self.discordtoken)
         
 
-    async def get_gpt_answer_to_prompt(interaction: discord.Interaction, prompt: str, context: str):
-        gpt_result = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
-        max_tokens=150,
-        messages=[
-            {"role" : "system", "content" : prompt},
-            {"role" : "user", "content" : context}
-        ]
-        )
-        response=gpt_result.choices[0].message.content.strip()
