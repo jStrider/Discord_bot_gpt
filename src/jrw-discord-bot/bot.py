@@ -93,7 +93,7 @@ class jrw_bot:
         @app_commands.describe(pickup_context = self.pickup_description)
         async def pickup(interaction: discord.Interaction, pickup_context: str):
             print("pickup command called")
-            start_gpt_call = asyncio.run(get_gpt_answer_to_prompt(interaction, self.init_prompt_pickup, pickup_context))
+            start_gpt_call = asyncio.create_task(get_gpt_answer_to_prompt(interaction, self.init_prompt_pickup, pickup_context))
             await interaction.response.send_message("loading an answer...")
 
         @bot.tree.command(name="chat")
