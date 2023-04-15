@@ -44,5 +44,7 @@ jobs:
         mkdir docker_container && cd docker_container
         git clone https://jStrider:${{ secrets.GIT_TOKEN }}@github.com/jStrider/Discord_bot_docker.git
         cd Discord_bot_docker
+        git config --global user.email "${GITHUB_ACTOR}"
+        git config --global user.name "${GITHUB_ACTOR}@users.noreply.github.com"
         git tag -a $(git describe --tags | awk -F. '{$NF = $NF + 1;} 1' | sed 's/ /./g') -m "new version pushed from the github action of the python project botgpt"
         git push --tags
