@@ -17,7 +17,7 @@ async def get_gpt_answer_to_prompt(interaction: discord.Interaction, prompt: str
     ]
     )
     response=gpt_result.choices[0].message.content.strip()
-    await interaction.edit_original_response(response)
+    await interaction.edit_original_response(content=response)
 class jrw_bot:
     def __init__(self):
         self.discordtoken = ""
