@@ -39,3 +39,10 @@ jobs:
         repository-url: https://test.pypi.org/legacy/
         user: __token__
         password: ${{ secrets.PYPI_API_TOKEN }}
+    - name: push a new tag for the docker image
+      run: |
+        mkdir docker_container && cd docker_container
+        git clone https://jStrider:${{ secrets.GIT_TOKEN }}@github.com/jStrider/Discord_bot_docker.git
+        cd Discord_bot_docker
+        git tag $(git describe --tags | awk -F. '{$NF = $NF + 1;} 1' | sed 's/ /./g')
+        git push --tags
