@@ -59,17 +59,8 @@ class jrw_bot:
         self.chat_description = config["FR"]["commands"]["chat"]["description"]
         self.init_prompt_chat_seduction = config["FR"]["prompts"]["init_prompt_chat_seduction"]
 
-    async def get_gpt_answer_to_prompt(interaction: discord.Interaction, prompt: str, context: str):
-        gpt_result = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
-        max_tokens=150,
-        messages=[
-            {"role" : "system", "content" : prompt},
-            {"role" : "user", "content" : context}
-        ]
-        )
-        response=gpt_result.choices[0].message.content.strip()
-        
+
+
         await interaction.edit_original_response(response)
     def init_bot(self):
         # Créer un objet Intents avec les intents par défaut
@@ -115,3 +106,13 @@ class jrw_bot:
         bot.run(self.discordtoken)
         
 
+    async def get_gpt_answer_to_prompt(interaction: discord.Interaction, prompt: str, context: str):
+        gpt_result = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        max_tokens=150,
+        messages=[
+            {"role" : "system", "content" : prompt},
+            {"role" : "user", "content" : context}
+        ]
+        )
+        response=gpt_result.choices[0].message.content.strip()
