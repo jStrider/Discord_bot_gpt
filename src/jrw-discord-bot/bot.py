@@ -79,20 +79,8 @@ class jrw_bot:
         @bot.tree.command(name="pickup")
         @app_commands.describe(pickup_context = self.pickup_description)
         async def pickup(interaction: discord.Interaction, pickup_context: str):
-                if  interaction.channel_id == self.specific_channel_id:
-                    gpt_result = openai.ChatCompletion.create(
-                    model="gpt-3.5-turbo",
-                    max_tokens=150,
-                    messages=[
-                        {"role" : "system", "content" : self.init_prompt_pickup},
-                        {"role" : "user", "content" : pickup_context}
-                    ]
-                    )
-                    try:
-                        print(gpt_result.choices[0].message.content)
-                        await interaction.response.send_message(str(gpt_result.choices[0].message.content))
-                    except Exception as e:
-                        print(e)
+            get_gpt_answer_to_prompt(interaction, self.init_prompt_pickup, pickup_context)
+            await interaction.response.send_message("loading an answer...")
 
         @bot.tree.command(name="chat")
         @app_commands.describe(chat_context = self.chat_description)
@@ -113,6 +101,15 @@ class jrw_bot:
             await interaction.response.send_message(gpt_result.choices[0].message.content.strip())
         # Démarrer le bot
         bot.run(self.discordtoken)
-         
-
-
+        
+        async def get_gpt_answer_to_prompt(interaction: discord.Interaction, prompt: str, context: str):
+            gpt_result = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            max_tokens=150,
+            messages=[
+                {"role" : "system", "content" : prompt},
+                {"role" : "user", "content" : context}
+            ]
+            )
+            response=gpt_result.choices[0].message.content.strip()
+            await interaction.edit_original_response(response)
