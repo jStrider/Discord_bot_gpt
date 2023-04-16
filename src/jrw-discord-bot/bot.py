@@ -7,18 +7,11 @@ from discord import Intents
 import openai
 from dotenv import load_dotenv
 import yaml
-async def get_gpt_answer_to_prompt(interaction: discord.Interaction, prompt: str, context: str):
-    gpt_result = openai.ChatCompletion.create(
-    model="gpt-3.5-turbo",
-    max_tokens=150,
-    messages=[
-        {"role" : "system", "content" : prompt},
-        {"role" : "user", "content" : context}
-    ]
-    )
-    response=gpt_result.choices[0].message.content.strip()
-    await interaction.edit_original_response(content=f'{response}')
+
+
+
 class jrw_bot:
+    
     def __init__(self):
         self.discordtoken = ""
         self.specific_channel_id = 0
@@ -26,6 +19,18 @@ class jrw_bot:
         self.init_prompt_pickup = ""
         self.chat_description = ""
         self.init_prompt_chat_seduction = ""
+
+    async def get_gpt_answer_to_prompt(interaction: discord.Interaction, prompt: str, context: str):
+        gpt_result = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        max_tokens=150,
+        messages=[
+            {"role" : "system", "content" : prompt},
+            {"role" : "user", "content" : context}
+        ]
+        )
+        response=gpt_result.choices[0].message.content.strip()
+        await interaction.edit_original_response(content=f'{response}')
 
     def load_config(self):
         # load env variables
