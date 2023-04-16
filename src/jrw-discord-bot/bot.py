@@ -53,7 +53,7 @@ class jrw_bot:
         env_config_path=os.environ.get("JRW_CONFIG_PATH")
         if env_config_path != None:
             self.config_file_path = env_config_path
-        self.load_config_file(self)
+        self.load_config_file()
         # Construct the absolute file path to the config file
 
     def load_config_file(self):
@@ -90,7 +90,7 @@ class jrw_bot:
         async def pickup(interaction: discord.Interaction, pickup_context: str):
             if  interaction.channel_id == self.specific_channel_id:
                 await interaction.response.send_message(f"chargement de la meilleure phrase d'accroche possible avec le contexte donné : {pickup_context}")
-                self.load_config_file(self)
+                self.load_config_file()
                 gpt_result = openai.ChatCompletion.create(
                 model="gpt-3.5-turbo",
                 max_tokens=150,
@@ -107,7 +107,7 @@ class jrw_bot:
         async def chat(interaction: discord.Interaction, chat_context: str):
             if  interaction.channel_id == self.specific_channel_id:
                 await interaction.response.send_message(f"chargement de la meilleure réponse possible avec le contexte donné : {chat_context}")
-                self.load_config_file(self)
+                self.load_config_file()
                 gpt_result = openai.ChatCompletion.create(
                 model="gpt-3.5-turbo",
                 max_tokens=150,
