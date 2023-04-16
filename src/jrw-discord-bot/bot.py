@@ -19,7 +19,7 @@ class jrw_bot:
         self.init_prompt_pickup = ""
         self.chat_description = ""
         self.init_prompt_chat_seduction = ""
-        self.config_file_path = "/etc/botgpt/config.yml"
+        self.config_file_path = "/data/config.yml"
 
     def load_config(self):
         # load env variables
