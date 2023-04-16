@@ -1,4 +1,7 @@
 ---
+openai:
+  model: gpt-3.5-turbo
+  max_token: 500
 FR:
   commands:
     pickup:

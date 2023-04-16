@@ -70,6 +70,8 @@ class jrw_bot:
         self.init_prompt_pickup = config["FR"]["prompts"]["init_prompt_pickup"]
         self.chat_description = config["FR"]["commands"]["chat"]["description"]
         self.init_prompt_chat_seduction = config["FR"]["prompts"]["init_prompt_chat_seduction"]
+        self.openai_model = config["openai"]["model"]
+        self.openai_max_tokens = config["openai"]["max_tokens"]
 
     def init_bot(self):
         # Créer un objet Intents avec les intents par défaut
@@ -95,8 +97,8 @@ class jrw_bot:
                 await interaction.response.send_message(f"chargement de la meilleure phrase d'accroche possible avec le contexte donné : {pickup_context}")
                 self.load_config_file()
                 gpt_result = openai.ChatCompletion.create(
-                model="gpt-3.5-turbo",
-                max_tokens=150,
+                model=self.openai_model,
+                max_tokens=self.openai_max_tokens,
                 messages=[
                 {"role" : "system", "content" : self.init_prompt_pickup},
                 {"role" : "user", "content" : pickup_context}
@@ -112,8 +114,8 @@ class jrw_bot:
                 await interaction.response.send_message(f"chargement de la meilleure réponse possible avec le contexte donné : {chat_context}")
                 self.load_config_file()
                 gpt_result = openai.ChatCompletion.create(
-                model="gpt-3.5-turbo",
-                max_tokens=150,
+                model=self.openai_model,
+                max_tokens=self.openai_max_tokens,
                 messages=[
                     {"role" : "system", "content" : self.init_prompt_chat_seduction},
                     {"role" : "user", "content" : chat_context}
