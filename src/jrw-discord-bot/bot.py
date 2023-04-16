@@ -15,10 +15,10 @@ class jrw_bot:
     def __init__(self):
         self.discordtoken = ""
         self.specific_channel_id = 0
-        self.pickup_description = ""
-        self.init_prompt_pickup = ""
-        self.chat_description = ""
-        self.init_prompt_chat_seduction = ""
+        self.command_pickup_description = ""
+        self.command_pickup_openai_prompt = ""
+        self.command_chat_description = ""
+        self.command_chat_openai_prompt = ""
         self.config_file_path = "/data/config.yml"
 
     def load_config(self):
@@ -66,12 +66,18 @@ class jrw_bot:
             config = yaml.safe_load(file)
 
         # Access the values in the YAML file
-        self.pickup_description = config["FR"]["commands"]["pickup"]["description"]
-        self.init_prompt_pickup = config["FR"]["prompts"]["init_prompt_pickup"]
-        self.chat_description = config["FR"]["commands"]["chat"]["description"]
-        self.init_prompt_chat_seduction = config["FR"]["prompts"]["init_prompt_chat_seduction"]
-        self.openai_model = config["openai"]["model"]
-        self.openai_max_tokens = config["openai"]["max_tokens"]
+
+        # commands
+        ## pickup
+        self.command_pickup_description = config["FR"]["commands"]["pickup"]["description"]
+        self.command_pickup_openai_prompt = config["FR"]["commands"]["pickup"]["openai"]["prompt"]
+        self.command_pickup_openai_model = config["FR"]["commands"]["pickup"]["openai"]["model"]
+        self.command_pickup_openai_max_tokens = config["FR"]["commands"]["pickup"]["openai"]["max_tokens"]
+        ## chat
+        self.command_chat_description = config["FR"]["commands"]["chat"]["description"]
+        self.command_chat_openai_prompt = config["FR"]["commands"]["chat"]["openai"]["prompt"]
+        self.command_chat_openai_model = config["FR"]["commands"]["chat"]["openai"]["model"]
+        self.command_chat_openai_max_tokens = config["FR"]["commands"]["chat"]["openai"]["max_tokens"]
 
     def init_bot(self):
         # Créer un objet Intents avec les intents par défaut
@@ -91,16 +97,16 @@ class jrw_bot:
                 print(e)
         # gen a pickup line with context
         @bot.tree.command(name="pickup")
-        @app_commands.describe(pickup_context = self.pickup_description)
+        @app_commands.describe(pickup_context = self.command_pickup_description)
         async def pickup(interaction: discord.Interaction, pickup_context: str):
             if  interaction.channel_id == self.specific_channel_id:
                 await interaction.response.send_message(f"chargement de la meilleure phrase d'accroche possible avec le contexte donné : {pickup_context}")
                 self.load_config_file()
                 gpt_result = openai.ChatCompletion.create(
-                model=self.openai_model,
-                max_tokens=self.openai_max_tokens,
+                model=self.command_pickup_openai_model,
+                max_tokens=self.command_pickup_openai_max_tokens,
                 messages=[
-                {"role" : "system", "content" : self.init_prompt_pickup},
+                {"role" : "system", "content" : self.command_pickup_openai_prompt},
                 {"role" : "user", "content" : pickup_context}
                 ]
                 )
@@ -108,16 +114,16 @@ class jrw_bot:
                 await interaction.edit_original_response(content=f'contexte : \n  {pickup_context} \n \n  réponses : \n{response}')
 
         @bot.tree.command(name="chat")
-        @app_commands.describe(chat_context = self.chat_description)
+        @app_commands.describe(chat_context = self.command_chat_description)
         async def chat(interaction: discord.Interaction, chat_context: str):
             if  interaction.channel_id == self.specific_channel_id:
                 await interaction.response.send_message(f"chargement de la meilleure réponse possible avec le contexte donné : {chat_context}")
                 self.load_config_file()
                 gpt_result = openai.ChatCompletion.create(
-                model=self.openai_model,
-                max_tokens=self.openai_max_tokens,
+                model=self.command_chat_openai_model,
+                max_tokens=self.command_pickup_openai_max_tokens,
                 messages=[
-                    {"role" : "system", "content" : self.init_prompt_chat_seduction},
+                    {"role" : "system", "content" : self.command_chat_openai_prompt},
                     {"role" : "user", "content" : chat_context}
                 ]
                 )

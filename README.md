@@ -75,7 +75,7 @@ You need to create a developper account on DISCORD and to make an account on ope
 
 ### configuration file
 
-it's a simple yml file that contain simple configuration about the comands (mainly text for now)
+it's a simple yml file that contain simple configuration about the comands used
 
 ```
 ---
@@ -83,28 +83,49 @@ FR:
   commands:
     pickup:
       description:  "donne moi le contexte et je t'ecris ma meilleur disquette ;)"
+      openai:
+        prompt: |
+          tu es un coach en séduction française.Tu exerces ce metier depuis 10 ans,
+          tu sais ce qu'il faut dire pour séduire une femme et dans cet objectif, tu me donnera une phrase d'acroche en fonction du contexte que je te donnerai.
+          tu detaillera tes réponses et justifiera ton choix en 3 points.
+          tu donnera des façons de contuer l'interaction pour séduire au mieux la femme que j'ai en face de moi
+          tu donnera entre parenthese une note sur 100 du potentiel de seduction de cette phrase d'accroche. 
+        model: gpt-3.5-turbo
+        max_tokens: 300
     chat:
       description:  "envoi ici le dernier message de ton crush on l'historique de conversation, j'y répondrais pour toi"
-  prompts:
-    init_prompt_pickup: "tu es un coach en séduction, professionnel du domaines depuis de nombreuses années, tu sais ce qu'il faut dire pour séduire une femme et dans cet objectif, tu me donnera une phrase d'acroche originale et drole à chaque fois que je te parlerai en utilisant au maximum le contexte de ma phrase. tu ne dois me répondre rien d'autre que par 3 propositions de phrase d'accroche, chaque proposition commencera pas : proposition <numéro de la proposition> :"
-    init_prompt_chat_seduction: |
-      a partir de maintenant, tu interprete 'MOI' et toutes tes réponse commencent par 'MOI:',
-      tu es un homme et je suis une femme. 
-      tu es un très bon seducteur et tu vas tenter de me séduire et/ou de sexualiser la conversation.
-      Propose 3 réponses qui conviendrais dans cette conversation
-      Chacune des réponse doit être precedé de "porposition <numéro de proposition> :"
+      openai:
+        model: gpt-3.5-turbo
+        max_tokens: 150
+        prompt: |
+          a partir de maintenant, tu interprete 'MOI' et toutes tes réponse commencent par 'MOI:',
+          tu es un homme et je suis une femme. 
+          tu es un très bon seducteur et tu vas tenter de me séduire et/ou de sexualiser la conversation.
+          Propose 3 réponses qui conviendrais dans cette conversation
+          Chacune des réponse doit être precedé de "porposition <numéro de proposition> :"
 ```
 
-I hope in the fture to put there more powerfull options
-### coommands
+For each command it is possible to describe thoses elements : 
 
-commands.description are used to show the command description.
+##### description
+
+text shown on the discord gui when you use the command
 
 when you type /pickup in discord, there is a small text => that's it
 
-### prompts
+##### openai.model
 
-prompts are the text that is send to pre-init the openai GPT for each of the command and the given context.
+model used by openai as described in their api doc
+
+##### openai.max_token
+
+max_token allowed for the response, its described in the openai api doc
+
+##### openai.prompt
+
+initial prompt used to initialize the bot for the parent's command. it is the system prompt in the openai api.
+
+I hope in the fture to put there more powerfull options
 
 ### Start the bot
 
