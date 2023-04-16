@@ -78,6 +78,7 @@ class jrw_bot:
         @bot.event
         async def on_ready():
             print(f"{bot.user} est connecté à Discord !")
+            print(f"test : Version: 0.1.2")
             try:
                 synced = await bot.tree.sync()
                 print(f"Synced {len(synced)} command(s)")
