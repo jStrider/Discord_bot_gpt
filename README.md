@@ -72,6 +72,40 @@ I recommand you to make a .jrwbot in your home directory and to source it from y
 
 You need to create a developper account on DISCORD and to make an account on openai to get thoses token but internet is better than me at explaining that.
 
+
+### configuration file
+
+it's a simple yml file that contain simple configuration about the comands (mainly text for now)
+
+```
+---
+FR:
+  commands:
+    pickup:
+      description:  "donne moi le contexte et je t'ecris ma meilleur disquette ;)"
+    chat:
+      description:  "envoi ici le dernier message de ton crush on l'historique de conversation, j'y répondrais pour toi"
+  prompts:
+    init_prompt_pickup: "tu es un coach en séduction, professionnel du domaines depuis de nombreuses années, tu sais ce qu'il faut dire pour séduire une femme et dans cet objectif, tu me donnera une phrase d'acroche originale et drole à chaque fois que je te parlerai en utilisant au maximum le contexte de ma phrase. tu ne dois me répondre rien d'autre que par 3 propositions de phrase d'accroche, chaque proposition commencera pas : proposition <numéro de la proposition> :"
+    init_prompt_chat_seduction: |
+      a partir de maintenant, tu interprete 'MOI' et toutes tes réponse commencent par 'MOI:',
+      tu es un homme et je suis une femme. 
+      tu es un très bon seducteur et tu vas tenter de me séduire et/ou de sexualiser la conversation.
+      Propose 3 réponses qui conviendrais dans cette conversation
+      Chacune des réponse doit être precedé de "porposition <numéro de proposition> :"
+```
+
+I hope in the fture to put there more powerfull options
+### coommands
+
+commands.description are used to show the command description.
+
+when you type /pickup in discord, there is a small text => that's it
+
+### prompts
+
+prompts are the text that is send to pre-init the openai GPT for each of the command and the given context.
+
 ### Start the bot
 
 Once the steps above are done, you can start the bot : 
