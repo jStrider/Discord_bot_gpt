@@ -114,7 +114,6 @@ class jrw_bot:
         async def chat(interaction: discord.Interaction, chat_context: str):
                 if  interaction.channel_id == self.specific_channel_id:
                     await interaction.response.send_message(f"chargement de la meilleure réponse possible avec le contexte donné : {chat_context}")
-                    task = asyncio.create_task(sendAsyncMessage(interaction,chat_context))
                     gpt_result = openai.ChatCompletion.create(
                     model="gpt-3.5-turbo",
                     max_tokens=150,
