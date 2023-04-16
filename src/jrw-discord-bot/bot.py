@@ -97,8 +97,7 @@ class jrw_bot:
         @bot.tree.command(name="pickup")
         @app_commands.describe(pickup_context = self.pickup_description)
         async def pickup(interaction: discord.Interaction, pickup_context: str):
-            print("pickup command called")
-            await interaction.response.send_message("loading an answer...")
+            await interaction.response.send_message(f"chargement de la meilleure phrase d'accroche possible avec le contexte donné : {pickup_context}")
             gpt_result = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             max_tokens=150,
@@ -109,24 +108,23 @@ class jrw_bot:
             )
             response=gpt_result.choices[0].message.content.strip()
             await interaction.edit_original_response(content=f'{response}')
-            
+
         @bot.tree.command(name="chat")
         @app_commands.describe(chat_context = self.chat_description)
         async def chat(interaction: discord.Interaction, chat_context: str):
                 if  interaction.channel_id == self.specific_channel_id:
-                    await interaction.response.send_message("loading an answer...")
+                    await interaction.response.send_message(f"chargement de la meilleure réponse possible avec le contexte donné : {chat_context}")
                     task = asyncio.create_task(sendAsyncMessage(interaction,chat_context))
-
-        async def sendAsyncMessage(interaction: discord.Interaction, prompt: str ):
-            gpt_result = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
-            max_tokens=150,
-            messages=[
-                {"role" : "system", "content" : self.init_prompt_chat_seduction},
-                {"role" : "user", "content" : prompt}
-            ]
-            )
-            await interaction.response.send_message(gpt_result.choices[0].message.content.strip())
+                    gpt_result = openai.ChatCompletion.create(
+                    model="gpt-3.5-turbo",
+                    max_tokens=150,
+                    messages=[
+                        {"role" : "system", "content" : self.init_prompt_chat_seduction},
+                        {"role" : "user", "content" : prompt}
+                    ]
+                    )
+                    response=interaction.response.send_message(gpt_result.choices[0].message.content.strip())
+                    await interaction.edit_original_response(content=f'{response}')
         # Démarrer le bot
         bot.run(self.discordtoken)
         
