@@ -122,7 +122,7 @@ class jrw_bot:
                         {"role" : "user", "content" : chat_context}
                     ]
                     )
-                    response=interaction.response.send_message(gpt_result.choices[0].message.content.strip())
+                    response=gpt_result.choices[0].message.content.strip()
                     await interaction.edit_original_response(content=f'{response}')
         # Démarrer le bot
         bot.run(self.discordtoken)
