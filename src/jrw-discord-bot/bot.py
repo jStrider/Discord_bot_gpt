@@ -51,8 +51,11 @@ class jrw_bot:
             exit(1)
         
         env_config_path=os.environ.get("JRW_CONFIG_PATH")
-        if env_config_path == None:
+        print("env_config_path : " + str(env_config_path))
+        if env_config_path != None:
+            print("is non None env_config_path : " + str(env_config_path))
             self.config_file_path = env_config_path
+        print(" now " + self.config_file_path + " is the config file path")
         self.load_config_file()
         # Construct the absolute file path to the config file
 
