@@ -119,7 +119,7 @@ class jrw_bot:
                     max_tokens=150,
                     messages=[
                         {"role" : "system", "content" : self.init_prompt_chat_seduction},
-                        {"role" : "user", "content" : prompt}
+                        {"role" : "user", "content" : chat_context}
                     ]
                     )
                     response=interaction.response.send_message(gpt_result.choices[0].message.content.strip())
