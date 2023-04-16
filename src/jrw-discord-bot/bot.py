@@ -98,9 +98,18 @@ class jrw_bot:
         @app_commands.describe(pickup_context = self.pickup_description)
         async def pickup(interaction: discord.Interaction, pickup_context: str):
             print("pickup command called")
-            start_gpt_call = asyncio.create_task(get_gpt_answer_to_prompt(interaction, self.init_prompt_pickup, pickup_context))
             await interaction.response.send_message("loading an answer...")
-
+            gpt_result = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            max_tokens=150,
+            messages=[
+            {"role" : "system", "content" : self.init_prompt_pickup},
+            {"role" : "user", "content" : pickup_context}
+            ]
+            )
+            response=gpt_result.choices[0].message.content.strip()
+            await interaction.edit_original_response(content=f'{response}')
+            
         @bot.tree.command(name="chat")
         @app_commands.describe(chat_context = self.chat_description)
         async def chat(interaction: discord.Interaction, chat_context: str):
