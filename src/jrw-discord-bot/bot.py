@@ -19,18 +19,7 @@ class jrw_bot:
         self.init_prompt_pickup = ""
         self.chat_description = ""
         self.init_prompt_chat_seduction = ""
-
-    async def get_gpt_answer_to_prompt(interaction: discord.Interaction, prompt: str, context: str):
-        gpt_result = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
-        max_tokens=150,
-        messages=[
-            {"role" : "system", "content" : prompt},
-            {"role" : "user", "content" : context}
-        ]
-        )
-        response=gpt_result.choices[0].message.content.strip()
-        await interaction.edit_original_response(content=f'{response}')
+        self.config_file_path = "/etc/botgpt/config.yml"
 
     def load_config(self):
         # load env variables
@@ -60,13 +49,17 @@ class jrw_bot:
         if config_env_not_set:
             print("Please set the environment variables")
             exit(1)
-        # Get the absolute path to the current directory
-        current_dir = os.path.abspath(os.path.dirname(__file__))
-
+        
+        env_config_path=os.environ.get("JRW_CONFIG_PATH")
+        if env_config_path != None:
+            self.config_file_path = env_config_path
+        self.load_config_file(self)
         # Construct the absolute file path to the config file
-        config_file_path = os.path.join(current_dir, "config.yml")
+
+    def load_config_file(self):
+        
         # Read the YAML file
-        with open(config_file_path, "r") as file:
+        with open(self.config_file_path, "r") as file:
             config = yaml.safe_load(file)
 
         # Access the values in the YAML file
@@ -75,9 +68,6 @@ class jrw_bot:
         self.chat_description = config["FR"]["commands"]["chat"]["description"]
         self.init_prompt_chat_seduction = config["FR"]["prompts"]["init_prompt_chat_seduction"]
 
-
-
-        
     def init_bot(self):
         # Créer un objet Intents avec les intents par défaut
         intents = Intents.default()
@@ -97,33 +87,36 @@ class jrw_bot:
         @bot.tree.command(name="pickup")
         @app_commands.describe(pickup_context = self.pickup_description)
         async def pickup(interaction: discord.Interaction, pickup_context: str):
-            await interaction.response.send_message(f"chargement de la meilleure phrase d'accroche possible avec le contexte donné : {pickup_context}")
-            gpt_result = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
-            max_tokens=150,
-            messages=[
-            {"role" : "system", "content" : self.init_prompt_pickup},
-            {"role" : "user", "content" : pickup_context}
-            ]
-            )
-            response=gpt_result.choices[0].message.content.strip()
-            await interaction.edit_original_response(content=f'{response}')
+            if  interaction.channel_id == self.specific_channel_id:
+                await interaction.response.send_message(f"chargement de la meilleure phrase d'accroche possible avec le contexte donné : {pickup_context}")
+                self.load_config_file(self)
+                gpt_result = openai.ChatCompletion.create(
+                model="gpt-3.5-turbo",
+                max_tokens=150,
+                messages=[
+                {"role" : "system", "content" : self.init_prompt_pickup},
+                {"role" : "user", "content" : pickup_context}
+                ]
+                )
+                response=gpt_result.choices[0].message.content.strip()
+                await interaction.edit_original_response(content=f'contexte : \n  {pickup_context} \n \n  réponses : \n{response}')
 
         @bot.tree.command(name="chat")
         @app_commands.describe(chat_context = self.chat_description)
         async def chat(interaction: discord.Interaction, chat_context: str):
-                if  interaction.channel_id == self.specific_channel_id:
-                    await interaction.response.send_message(f"chargement de la meilleure réponse possible avec le contexte donné : {chat_context}")
-                    gpt_result = openai.ChatCompletion.create(
-                    model="gpt-3.5-turbo",
-                    max_tokens=150,
-                    messages=[
-                        {"role" : "system", "content" : self.init_prompt_chat_seduction},
-                        {"role" : "user", "content" : chat_context}
-                    ]
-                    )
-                    response=gpt_result.choices[0].message.content.strip()
-                    await interaction.edit_original_response(content=f'{response}')
+            if  interaction.channel_id == self.specific_channel_id:
+                await interaction.response.send_message(f"chargement de la meilleure réponse possible avec le contexte donné : {chat_context}")
+                self.load_config_file(self)
+                gpt_result = openai.ChatCompletion.create(
+                model="gpt-3.5-turbo",
+                max_tokens=150,
+                messages=[
+                    {"role" : "system", "content" : self.init_prompt_chat_seduction},
+                    {"role" : "user", "content" : chat_context}
+                ]
+                )
+                response=gpt_result.choices[0].message.content.strip()
+                await interaction.edit_original_response(content=f'contexte : \n  {chat_context} \n \n  réponses : \n {response}')
         # Démarrer le bot
         bot.run(self.discordtoken)
         

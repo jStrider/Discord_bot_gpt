@@ -60,6 +60,14 @@ JRW_OPENAI_TOKEN=
 JRW_OPENAI_ORGID=
 ```
 
+Optionnal environnements variable :
+
+#### JRW_CONFIG_PATH
+
+default value : /etc/botgpt/config.yml
+
+you can put te config file in a different folder if you want to.
+
 I recommand you to make a .jrwbot in your home directory and to source it from your .bashrc, .profile or anything else.
 
 You need to create a developper account on DISCORD and to make an account on openai to get thoses token but internet is better than me at explaining that.
@@ -69,11 +77,5 @@ You need to create a developper account on DISCORD and to make an account on ope
 Once the steps above are done, you can start the bot : 
 
 `python3 -m jrw-discord-bot`
-
-
-
-
-
-
 
 Don't forget to credit me the day you will have to do the "how I met your mother" time with your kids
